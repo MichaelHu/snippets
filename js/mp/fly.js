@@ -129,7 +129,7 @@ window.fly = window.fly
                     $pre.find('code')
                         .attr('contenteditable', "true")
                         ;
-                    $('<button style="margin-bottom:5px;">Take Effect</button>')
+                    $('<button style="margin-bottom:5px;">Restart</button>')
                         .insertBefore($pre)
                         .on('click', function(){
                             execScript();
