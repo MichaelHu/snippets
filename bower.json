@@ -1,0 +1,23 @@
+{
+  "name": "snippets",
+  "authors": [
+    "hudamin <hdm258i@gmail.com>"
+  ],
+  "description": "snippets",
+  "main": "",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "snippets"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

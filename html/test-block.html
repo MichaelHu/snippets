@@ -1,0 +1,20 @@
+<div id="test_PH" class="test">
+<div class="test-container">
+
+    @[data-script="javascript"]
+    (function(){
+
+        var s = createShow('#test_PH');
+        var rslt = _.countBy([6.1, 4.2, 6.3], Math.floor);
+        s.show(1, rslt);
+
+        rslt = _.countBy(['one', 'two', 'three'], 'length');
+        s.append_show(2, rslt);
+
+    })();
+
+</div>
+<div class="test-console"></div>
+<div class="test-panel">
+</div>
+</div>
