@@ -1,4 +1,4 @@
-// Everywhere 
+// Just use it everywhere. Don't care where it is. 
 window.fly = window.fly 
     || (function(){
 
@@ -128,6 +128,11 @@ window.fly = window.fly
                 if(str.indexOf('editable') >= 0){
                     $pre.find('code')
                         .attr('contenteditable', "true")
+                        .on('keydown', function(e){
+                            if(e.altKey && e.which == '13'){
+                                execScript();
+                            }
+                        })
                         ;
                     $('<button style="margin-bottom:5px;">Restart</button>')
                         .insertBefore($pre)
