@@ -1,15 +1,11 @@
 <div id="test_PH" class="test">
 <div class="test-container">
 
-    @[data-script="javascript"]
-    (function(){
+    @[data-script="javascript"](function(){
 
-        var s = createShow('#test_PH');
-        var rslt = _.countBy([6.1, 4.2, 6.3], Math.floor);
-        s.show(1, rslt);
-
-        rslt = _.countBy(['one', 'two', 'three'], 'length');
-        s.append_show(2, rslt);
+        var s = fly.createShow('#test_PH');
+        s.show(1);
+        s.append_show(2);
 
     })();
 

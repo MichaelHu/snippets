@@ -108,7 +108,12 @@ window.fly = window.fly
     $(function(){
 
         $('pre').each(function(index, item){
-            var $pre = $(item);
+            var $pre = $(item)
+                , str = $pre.data('script')
+                ;
+
+            exec(str);
+            checkEditable(str);
 
             function execScript(){
                 $(
@@ -120,28 +125,50 @@ window.fly = window.fly
                 ;
             }
 
-            var str = $pre.data('script');
-            if(str && str.indexOf('javascript') >= 0){
+            function execHTML(){
+                var $insertBefore = $pre;
+                if($pre.prev('button').length){
+                    $insertBefore = $pre.prev('button'); 
+                }
 
-                execScript();
+                $insertBefore
+                    .prev('.mp-exec-html')
+                    .remove()
+                    ;
 
-                if(str.indexOf('editable') >= 0){
+                $(
+                    '<div class="mp-exec-html">'
+                    + $pre.text()
+                    + '</div>'
+                )
+                .insertBefore($insertBefore)
+                ;
+            }
+
+            function exec(script) {
+                if(script && script.indexOf('javascript') >= 0){
+                    execScript();
+                }
+                else if(script && script.indexOf('html') >= 0){
+                    execHTML();
+                }
+            }
+
+            function checkEditable(script){
+                if(script && script.indexOf('editable') >= 0){
                     $pre.find('code')
                         .attr('contenteditable', "true")
-                        .on('keydown', function(e){
-                            if(e.altKey && e.which == '13'){
-                                execScript();
-                            }
-                        })
                         ;
+
                     $('<button style="margin-bottom:5px;">Restart</button>')
                         .insertBefore($pre)
                         .on('click', function(){
-                            execScript();
+                            exec(script);
                         })
                         ;
                 }
             }
+
         });
 
     });
