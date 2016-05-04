@@ -32,50 +32,39 @@ window.fly = window.fly
             ;
     }
 
+    function _getStr(args, $cont){
+        var arr = [], arg, txt;
+        if(args.length){
+            for(var i=0; i<args.length; i++){
+                arg = args[i]; 
+                if('function' == typeof arg) arg = arg.toString();
+                arr.push(arg);
+            } 
+            txt = arr.join(' | ')
+                    .replace(/</g, '&lt;')
+                    .replace(/\r?\n/g, '<br>')
+                    ;
+        }
+        else {
+            txt = $cont.html()
+                .replace(/</g, '&lt;')
+                ;
+        }
+        return txt;
+    }
+
     var Display = {
 
         show: function($cont, $console){
             return function(){
-                var arr = [], arg, txt;
-                if(arguments.length){
-                    for(var i=0; i<arguments.length; i++){
-                        arg = arguments[i];; 
-                        if('function' == typeof arg) arg = arg.toString();
-                        arr.push(JSON.stringify(arg));
-                    } 
-                    txt = arr.join(' | ')
-                            .replace(/</g, '&lt;')
-                            ;
-                }
-                else {
-                    txt = $cont.html()
-                        .replace(/</g, '&lt;')
-                        ;
-                }
-
+                txt = _getStr(arguments);
                 $console.html(txt)
             };
         }
 
         , append_show: function($cont, $console){
             return function(content){
-                var arr = [], txt;
-                if(arguments.length){
-                    for(var i=0; i<arguments.length; i++){
-                        arg = arguments[i];; 
-                        if('function' == typeof arg) arg = arg.toString();
-                        arr.push(JSON.stringify(arg));
-                    } 
-                    txt = arr.join(' | ')
-                            .replace(/</g, '&lt;')
-                            ;
-                }
-                else {
-                    txt = $cont.html()
-                        .replace(/</g, '&lt;')
-                        ;
-                }
-
+                txt = _getStr(arguments);
                 $console.html(
                     $console.html() 
                     + '<br>'
