@@ -43,6 +43,7 @@ window.fly = window.fly
             txt = arr.join(' | ')
                     .replace(/</g, '&lt;')
                     .replace(/\r?\n/g, '<br>')
+                    .replace(/\x20/g, '&nbsp;')
                     ;
         }
         else {
@@ -140,6 +141,11 @@ window.fly = window.fly
                 }
                 else if(script && script.indexOf('html') >= 0){
                     execHTML();
+                }
+                else if(script) {
+                    if(typeof window.cbScriptBlock == 'function'){
+                        window.cbScriptBlock($pre, script);
+                    }
                 }
             }
 
