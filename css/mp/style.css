@@ -28,7 +28,7 @@
     position: relative;
 }
 
-.test-container code {
+pre code[contenteditable="true"]{
     outline: none;
 }
 
