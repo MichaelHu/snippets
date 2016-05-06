@@ -59,14 +59,14 @@ window.fly = window.fly
 
         show: function($cont, $console){
             return function(){
-                txt = _getStr(arguments);
+                txt = _getStr(arguments, $cont);
                 $console.html(txt)
             };
         }
 
         , append_show: function($cont, $console){
             return function(content){
-                txt = _getStr(arguments);
+                txt = _getStr(arguments, $cont);
                 $console.html(
                     $console.html() 
                     + '<br>'
