@@ -103,8 +103,16 @@ window.fly = window.fly
                 , str = $pre.data('script')
                 ;
 
-            exec(str);
-            checkEditable(str);
+            try {
+                exec(str);
+                checkEditable(str);
+            }
+            catch (e) {
+                console.log(
+                    'script error: '
+                    , e
+                );
+            }
 
             function execScript(){
                 $(
