@@ -109,8 +109,11 @@ window.fly = window.fly
             }
             catch (e) {
                 console.log(
-                    'script error: '
-                    , e
+                    'script error: ' + e.name + ', ' + e.message
+                    // , e.number
+                    // , e.fileName
+                    , e.stack
+                    , $pre.text()
                 );
             }
 
