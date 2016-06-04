@@ -93,6 +93,27 @@ window.fly = window.fly
         };
     }
 
+    function extend() {
+        var args = arguments
+            , dest = args[0]
+            ;
+
+        if(!dest){
+            return;
+        }
+
+        for(var i=1; i<args.length; i++){
+            var src = args[i];
+            for(var j in src){
+                if(src.hasOwnProperty(j)){
+                    dest[j] = src[j];
+                }                
+            }
+        }
+
+        return dest;
+    }
+
 
 
 
@@ -186,6 +207,7 @@ window.fly = window.fly
         , randomData: randomData
         , randomColor: randomColor
         , createShow: createShow
+        , extend: extend
     };
 
 
