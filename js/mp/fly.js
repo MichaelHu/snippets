@@ -125,8 +125,10 @@ window.fly = window.fly
                 ;
 
             try {
-                exec(str);
-                checkEditable(str);
+                setTimeout(function(){
+                    exec(str);
+                    checkEditable(str);
+                }, 0);
             }
             catch (e) {
                 console.log(
