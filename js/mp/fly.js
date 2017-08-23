@@ -147,6 +147,10 @@ window.fly = window.fly
                     code = Babel.transform( code, { presets: [ 'es2015', 'react' ] } ).code;
                 }
 
+                if ( type.indexOf( 'babel-loose' ) {
+                    code = code.replace( /^\s*(['"])use\s+strict\1;?/, '' );
+                }
+
                 $(
                     '<' + 'script>'
                     + code 
@@ -181,7 +185,10 @@ window.fly = window.fly
                 if(script && script.indexOf('javascript') >= 0){
                     execScript();
                 }
-                // es6+ / react
+                // es6+ / react, no 'use strict';
+                else if(script && script.indexOf('babel-loose') >= 0){
+                    execScript( 'babel-loose' );
+                }
                 else if(script && script.indexOf('babel') >= 0){
                     execScript( 'babel' );
                 }
