@@ -140,10 +140,16 @@ window.fly = window.fly
                 );
             }
 
-            function execScript(){
+            function execScript( type ){
+                var code = $pre.text();
+
+                if ( 'babel' == type ) {
+                    code = Babel.transform( code, { presets: [ 'es2015', 'react' ] ).code;
+                }
+
                 $(
                     '<' + 'script>'
-                    + $pre.text()
+                    + code 
                     + '</' + 'script>'
                 )
                 .insertBefore($pre)
@@ -171,14 +177,26 @@ window.fly = window.fly
             }
 
             function exec(script) {
+                // es5
                 if(script && script.indexOf('javascript') >= 0){
                     execScript();
                 }
+                // es6+ / react
+                else if(script && script.indexOf('babel') >= 0){
+                    execScript( 'babel' );
+                }
+                // html / svg 
                 else if(script && script.indexOf('html') >= 0){
                     execHTML();
                 }
+                // other
                 else if(script) {
                     if(typeof window.cbScriptBlock == 'function'){
+                        /*
+                         * @desc 脚本回调函数
+                         * @param $pre      {jQuery Object}     pre标签的jQuery对象
+                         * @param script    {string}            data-script属性字符串
+                         **/
                         window.cbScriptBlock($pre, script);
                     }
                 }
