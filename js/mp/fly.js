@@ -147,7 +147,7 @@ window.fly = window.fly
                     code = Babel.transform( code, { presets: [ 'es2015', 'react' ] } ).code;
                 }
 
-                if ( type.indexOf( 'babel-loose' ) {
+                if ( type.indexOf( 'babel-loose' ) ) {
                     code = code.replace( /^\s*(['"])use\s+strict\1;?/, '' );
                 }
 
