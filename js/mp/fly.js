@@ -124,21 +124,23 @@ window.fly = window.fly
                 , str = $pre.data('script')
                 ;
 
-            try {
-                setTimeout(function(){
+            setTimeout(function(){
+
+                try {
                     exec(str);
                     checkEditable(str);
-                }, 0);
-            }
-            catch (e) {
-                console.log(
-                    'script error: ' + e.name + ', ' + e.message
-                    // , e.number
-                    // , e.fileName
-                    , e.stack
-                    , $pre.text()
-                );
-            }
+                }
+                catch (e) {
+                    console.log(
+                        'script error: ' + e.name + ', ' + e.message
+                        // , e.number
+                        // , e.fileName
+                        , e.stack
+                        , $pre.text()
+                    );
+                }
+
+            }, 0);
 
             function execScript( type ){
                 var code = $pre.text();
