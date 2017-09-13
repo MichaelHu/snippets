@@ -131,13 +131,13 @@ window.fly = window.fly
                     checkEditable(str);
                 }
                 catch (e) {
+                    var msg = 'script error: ' + e.name + ', ' + e.message;
                     console.log(
-                        'script error: ' + e.name + ', ' + e.message
-                        // , e.number
-                        // , e.fileName
+                        msg
                         , e.stack
                         , $pre.text()
                     );
+                    alert( msg + '\ncode: ' + $pre.text() );
                 }
 
             }, 0);
