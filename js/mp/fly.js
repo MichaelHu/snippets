@@ -146,7 +146,7 @@ window.fly = window.fly
                 var code = $pre.text();
 
                 if ( 'babel' == type ) {
-                    code = Babel.transform( code, { presets: [ 'es2015', 'react' ] } ).code;
+                    code = Babel.transform( code, { presets: [ 'es2015', 'stage-0', 'react' ] } ).code;
 
                     if ( type.indexOf( 'babel-loose' ) ) {
                         code = code.replace( /^\s*(['"])use\s+strict\1;?/, '' );
