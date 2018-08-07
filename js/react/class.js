@@ -32,6 +32,7 @@ export class KlassName extends Component {
     componentWillReceiveProps( nextProps ) {}
     shouldComponentUpdate( nextProps, nextState ) { return true; }
     componentWillUpdate( nextProps, nextState ) {}
+    componentDidUpdate( prevProps, prevState ) {}
 
     /**
      * Rendering 

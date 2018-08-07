@@ -38,7 +38,11 @@ window.fly = window.fly
             for(var i=0; i<args.length; i++){
                 arg = args[i]; 
                 if('function' == typeof arg) arg = arg.toString();
-                if('object' == typeof arg) arg = JSON.stringify(arg);
+                if('object' == typeof arg) arg = JSON.stringify(
+                    arg
+                    , null
+                    , 4
+                );
                 arr.push(arg);
             } 
             txt = arr.join(' | ')
