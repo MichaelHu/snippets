@@ -5,6 +5,7 @@ BEGIN {
 
     # switches
     use_main = 0;
+    use_all_congye = 0;
     use_guomin_jingji_congye = 0;
     use_jingji_pucha_faren_congye_2013 = 0;
     use_chengzhen_congye = 1;
@@ -115,6 +116,29 @@ BEGIN {
         line_prefix = ", ";
     }
 
+    # 三次产业从业人员构成
+    if ( use_all_congye ) {
+        year = $1;
+        gsub( " +", "", year );
+        if ( match( year, "^(2009|201[0-8])$" ) ) {
+
+            printf "%s\"%s\": {\
+    \"total_congye\": %s\
+    , \"congye_unit\": \"万\"\
+    , \"ratio_unit\": \"%%\"\
+    , \"chanye1_congye\": %s\
+    , \"chanye2_congye\": %s\
+    , \"chanye3_congye\": %s\
+    , \"chanye1_ratio\": %s\
+    , \"chanye2_ratio\": %s\
+    , \"chanye3_ratio\": %s\
+}\n", line_prefix, $1, $2, $3, $4, $5, $6, $7, $8;
+
+            is_first_line = 0;
+        }
+    }
+
+
     # 2009-2017从业人员按国民经济行业的分布 
     if ( use_guomin_jingji_congye && $3 ) {
         industry_name = $1;
@@ -140,20 +164,20 @@ BEGIN {
         printf "%s\"%s\": {\
     \"name\": \"%s\"\
     , \"unit\": \"万\"\
-    , \"total_faren\": \"%s\"\
-    , \"total_congye\": \"%s\"\
-    , \"chanye2_faren\": \"%s\"\
-    , \"chanye2_congye\": \"%s\"\
-    , \"chanye3_faren\": \"%s\"\
-    , \"chanye3_congye\": \"%s\"\
-    , \"shiye_faren\": \"%s\"\
-    , \"shiye_congye\": \"%s\"\
-    , \"jiguan_faren\": \"%s\"\
-    , \"jiguan_congye\": \"%s\"\
-    , \"minbanfei_faren\": \"%s\"\
-    , \"minbanfei_congye\": \"%s\"\
-    , \"shehui_faren\": \"%s\"\
-    , \"shehui_congye\": \"%s\"\
+    , \"total_faren\": %s\
+    , \"total_congye\": %s\
+    , \"chanye2_faren\": %s\
+    , \"chanye2_congye\": %s\
+    , \"chanye3_faren\": %s\
+    , \"chanye3_congye\": %s\
+    , \"shiye_faren\": %s\
+    , \"shiye_congye\": %s\
+    , \"jiguan_faren\": %s\
+    , \"jiguan_congye\": %s\
+    , \"minbanfei_faren\": %s\
+    , \"minbanfei_congye\": %s\
+    , \"shehui_faren\": %s\
+    , \"shehui_congye\": %s\
 }\n", line_prefix, district_code, district_name, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15;
 
         is_first_line = 0;
@@ -163,16 +187,16 @@ BEGIN {
     if ( use_chengzhen_congye && district_code ) {
         printf "%s\"%s\": {\
     \"name\": \"%s\"\
-    , \"unit\": \"人\"\
-    , \"2016\": \"%s\"\
-    , \"2015\": \"%s\"\
-    , \"2014\": \"%s\"\
-    , \"2013\": \"%s\"\
-    , \"2012\": \"%s\"\
-    , \"2011\": \"%s\"\
-    , \"2010\": \"%s\"\
-    , \"2009\": \"%s\"\
-}\n", line_prefix, district_code, district_name, $2, $3, $4, $5, $6, $7, $8, $9;
+    , \"unit\": \"万\"\
+    , \"2016\": %.1f\
+    , \"2015\": %.1f\
+    , \"2014\": %.1f\
+    , \"2013\": %.1f\
+    , \"2012\": %.1f\
+    , \"2011\": %.1f\
+    , \"2010\": %.1f\
+    , \"2009\": %.1f\
+}\n", line_prefix, district_code, district_name, $2 / 10000, $3 / 10000, $4 / 10000, $5 / 10000, $6 / 10000, $7 / 10000, $8 / 10000, $9 / 10000;
 
         is_first_line = 0;
     }
@@ -209,10 +233,12 @@ END {
                 if ( ! inner_is_first_item ) {
                     inner_prefix = ", ";
                 }
-                printf "\n%s\"%s\": \"%s\"", inner_prefix, industry_codes[ i ], data_of_industry[ years[ j ], industry_codes[ i ] ];
+                v = data_of_industry[ years[ j ], industry_codes[ i ] ];
+                if ( ! v ) v = 0;
+                printf "\n    %s\"%s\": %s", inner_prefix, industry_codes[ i ], v;
                 inner_is_first_item = 0;
             }
-            print " \n, \"unit\": \"万\"\n}";
+            print " \n    , \"unit\": \"万\"\n}";
             outer_is_first_item = 0;
         }
     }
