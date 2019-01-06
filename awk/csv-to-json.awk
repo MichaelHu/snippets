@@ -6,18 +6,20 @@ BEGIN {
     # switches
     use_main = 0;
     use_all_congye = 0;
-    use_guomin_jingji_congye = 0;
-    use_jingji_pucha_faren_congye_2013 = 0;
-    use_chengzhen_congye = 1;
+    use_faren_congye = 0;
+    use_jingji_pucha_faren_congye_2013 = 1;
+    use_chengzhen_congye = 0;
     use_zujin_monthly = 0;
 
     # config
     district_list[ "合计" ] = "110";
     district_list[ "全市" ] = "110";
     district_list[ "密云区" ] = "110228";
+    district_list[ "密云县" ] = "110228";
     district_list[ "怀柔区" ] = "110116";
     district_list[ "房山区" ] = "110111";
     district_list[ "延庆区" ] = "110229";
+    district_list[ "延庆县" ] = "110229";
     district_list[ "东城区" ] = "110101";
     district_list[ "门头沟区" ] = "110109";
     district_list[ "海淀区" ] = "110108";
@@ -104,6 +106,8 @@ BEGIN {
     # print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10;
     district_name = $1;
     gsub( " +", "", district_name );
+    gsub( "县", "区", district_name );
+
     if ( district_name == "合计" ) {
         district_name = "全市";
     }
@@ -139,8 +143,8 @@ BEGIN {
     }
 
 
-    # 2009-2017从业人员按国民经济行业的分布 
-    if ( use_guomin_jingji_congye && $3 ) {
+    # 2009-2017法人单位从业人员按国民经济行业的分布 
+    if ( use_faren_congye && $3 ) {
         industry_name = $1;
         gsub( " +", "", industry_name );
         industry_code = industry_list[ industry_name ];
@@ -188,6 +192,7 @@ BEGIN {
         printf "%s\"%s\": {\
     \"name\": \"%s\"\
     , \"unit\": \"万\"\
+    , \"2017\": %.1f\
     , \"2016\": %.1f\
     , \"2015\": %.1f\
     , \"2014\": %.1f\
@@ -196,7 +201,9 @@ BEGIN {
     , \"2011\": %.1f\
     , \"2010\": %.1f\
     , \"2009\": %.1f\
-}\n", line_prefix, district_code, district_name, $2 / 10000, $3 / 10000, $4 / 10000, $5 / 10000, $6 / 10000, $7 / 10000, $8 / 10000, $9 / 10000;
+}\n", line_prefix, district_code, district_name, $2 / 10000\
+    , $3 / 10000, $4 / 10000, $5 / 10000, $6 / 10000\
+    , $7 / 10000, $8 / 10000, $9 / 10000, $10 / 10000;
 
         is_first_line = 0;
     }
@@ -219,7 +226,7 @@ BEGIN {
 }
 
 END {
-    if ( use_guomin_jingji_congye ) {
+    if ( use_faren_congye ) {
         outer_is_first_item = 1;
         for ( j = 1; j <= length( years ); j++) {
             outer_prefix = "";
