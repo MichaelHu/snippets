@@ -5,9 +5,10 @@ BEGIN {
 
     # switches
     use_main = 0;
+    use_key_spots = 1;
     use_all_congye = 0;
     use_faren_congye = 0;
-    use_jingji_pucha_faren_congye_2013 = 1;
+    use_jingji_pucha_faren_congye_2013 = 0;
     use_chengzhen_congye = 0;
     use_zujin_monthly = 0;
 
@@ -93,6 +94,13 @@ BEGIN {
 
     # pre action
     print "{";
+
+    # 重点区域围栏
+    if ( use_key_spots ) {
+        print "\"type\": \"FeatureCollection\",\
+\"features\": [";
+    }
+    
 }
 
 {
@@ -118,6 +126,35 @@ BEGIN {
     }
     else {
         line_prefix = ", ";
+    }
+
+    # 重点区域围栏
+    if ( use_key_spots ) {
+        main_domain = $2;
+        sub_domain = $4;
+        real_domain = main_domain;
+        if ( sub_domain ) {
+            real_domain = sub_domain;
+        }
+        coordinates = $3;
+        gsub( ";", ",", coordinates );
+
+        if ( real_domain ) {
+
+            printf "%s{\
+    \"type\": \"Feature\"\
+    , \"properties\": { \"QH_NAME\": \"%s\" }\
+    , \"geometry\": {\
+        \"type\": \"MultiPolygon\"\
+        , \"coordinates\": [[[\
+%s\
+        ]]]\
+    }\
+}\n", line_prefix, real_domain, coordinates;
+
+            is_first_line = 0;
+
+        }
     }
 
     # 三次产业从业人员构成
@@ -256,6 +293,11 @@ END {
         }
 
         for ( i in arr ) print arr[ i ];
+    }
+
+    # 重点区域围栏
+    if ( use_key_spots ) {
+        print "]";
     }
 
     print "}";
