@@ -27,7 +27,11 @@ BEGIN {
         file_name = $0;
         sub("^[^\t ]+[\t ]+", "", file_name);
     }
+
+    # escape: white spaces, ( or )
     gsub(" ", "\\ ", file_name);
+    gsub("\\(", "\\(", file_name);
+    gsub("\\)", "\\)", file_name);
     # print md5, file_name;
 
     if( md5s[md5] ) {
