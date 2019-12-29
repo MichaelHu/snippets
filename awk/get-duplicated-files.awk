@@ -1,5 +1,7 @@
-# Usage: 
-# find . -type f -exec md5 {} \; | awk -f ~/snippets/awk/get-duplicated-files.awk | sed -e 's/^/rm -rf /g' | sh -x
+## Usage: 
+# mac:   $ find . -type f -exec md5 {} \; | awk -f ~/snippets/awk/get-duplicated-files.awk | sed -e 's/^/rm -rf /g' | sh -x
+# linux: $ find . -type f -exec md5 {} \; | awk -f ~/snippets/awk/get-duplicated-files.awk -v is_linux=1 | sed -e 's/^/rm -rf /g' | sh -x
+##
 BEGIN {
     if( !is_linux ) {
         FS = " *= *"
