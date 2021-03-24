@@ -4,6 +4,63 @@ window.fly = window.fly
 
     // @require jQuery
 
+    var flowchartOptions = {
+        x: 0,
+        y: 0,
+        "line-width": 2,
+        "line-length": 50,
+        "text-margin": 10,
+        "font-size": 14,
+        "font-color": "#000",
+        "line-color": "black",
+        "element-color": "black",
+        fill: "white",
+        "yes-text": "yes",
+        "no-text": "no",
+        "arrow-end": "block",
+        scale: 1,
+
+        // style symbol types
+        symbols: {
+            start: {
+                "font-color": "red",
+                "element-color": "green",
+                fill: "yellow"
+            },
+            end: {
+                class: "end-element"
+            }
+        },
+
+        // even flowstate support ;-)
+        flowstate: {
+            past: { fill: "#CCCCCC", "font-size": 12 },
+            current: { fill: "yellow", "font-color": "red", "font-weight": "bold" },
+            future: { fill: "#FFFF99" },
+            request: { fill: "blue" },
+            invalid: { fill: "#999" },
+            customize: { fill: "green" },
+            approved: {
+                fill: "#58C4A3",
+                "font-size": 12,
+                "yes-text": "APPROVED",
+                "no-text": "n/a"
+            },
+            rejected: {
+                fill: "#C45879",
+                "font-size": 12,
+                "yes-text": "n/a",
+                "no-text": "REJECTED"
+            }
+        }
+    }; 
+
+    var _cuid = 1;
+
+    function cuid() {
+        return _cuid++;
+    }
+
     function random(min, max){
         return min + Math.random() * ( max - min );
     }
@@ -141,7 +198,12 @@ window.fly = window.fly
                         , e.stack
                         , $pre.text()
                     );
-                    alert( msg + '\ncode: ' + $pre.text() );
+                    // alert( msg + '\ncode: ' + $pre.text() );
+                    $( '<p style="color: #666; font-style: italic; font-family: monospace;">' 
+                        + '<em style="color: red; font-weight: bold;">[ parse error ]</em>: '
+                        + msg 
+                        + '</p>' 
+                    ).insertBefore( $pre );
                 }
 
             }, 0);
@@ -164,6 +226,37 @@ window.fly = window.fly
                 )
                 .insertBefore($pre)
                 ;
+            }
+
+            function execFlowchart(script) {
+                var code = $pre.text();
+                var diagram = flowchart.parse(code);
+                var $diagramContainer = $('<div />').insertBefore($pre);
+                diagram.drawSVG($diagramContainer[0], flowchartOptions);
+                if (script.indexOf('show-code') < 0) {
+                    $pre.hide();
+                }
+            }
+
+            function execMermaid(script) {
+                var code = $pre.text();
+                var containerId = 'mermaid_container_' + cuid();
+                var $diagramContainer = $('<div />')
+                    .insertBefore($pre)
+                    ;
+
+                mermaidAPI.render(
+                    containerId 
+                    , code 
+                    , function(svgCode) {
+                        $diagramContainer.html(svgCode);
+                    }
+                    , $diagramContainer[0]
+                );
+
+                if (script.indexOf('show-code') < 0) {
+                    $pre.hide();
+                }
             }
 
             function execHTML(){
@@ -197,6 +290,13 @@ window.fly = window.fly
                 }
                 else if(script && script.indexOf('babel') >= 0){
                     execScript( 'babel' );
+                }
+                // flowchart
+                else if(script && script.indexOf('flowchart') >= 0){
+                    execFlowchart(script);
+                }
+                else if(script && script.indexOf('mermaid') >= 0){
+                    execMermaid(script);
                 }
                 // html / svg 
                 else if(script && script.indexOf('html') >= 0){
